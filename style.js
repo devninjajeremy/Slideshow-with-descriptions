@@ -9,18 +9,7 @@ var stop_loop = false; // to be deleted
 var stop_loop_on;
 var loop_stopped = false;
 
-$(document).ready(function()
-{	
-	
-	// init var total_images
-	total_images = $('.big_image').length;
-
-	$('.cnt_descr_box').each(function(){
-
-		diff = ($(this).parent().height() - $(this).height())/2;
-		if (diff > 0 ) $(this).css( 'top', diff );
-
-	});
+$(document).ready(function(){
 
 	// installing the spinner icon
 	var opts = {
@@ -45,6 +34,20 @@ $(document).ready(function()
 	var target = document.getElementById('mask');
 	var spinner = new Spinner(opts).spin(target);
 
+});
+$(window).load(function()
+{	
+	
+	// init var total_images
+	total_images = $('.big_image').length;
+
+	$('.cnt_descr_box').each(function(){
+
+		diff = ($(this).parent().height() - $(this).height())/2;
+		if (diff > 0 ) $(this).css( 'top', diff );
+
+	});
+
 	// Assign variable
 	limit = $('.big_image').length;
     descr_height = $('#descr_box').height();
@@ -55,9 +58,7 @@ $(document).ready(function()
 
     $('#descr_box').css('top',$('#descr_box').height());
 
-    // Loading mask till images load
-	$('#images_list').waitForImages({
-	    finished: function() {
+   
 	        
 	        $('#mask').delay(200).fadeOut("slow");
 		    // All descendant images have loaded, now slide up.
@@ -65,12 +66,6 @@ $(document).ready(function()
 
 		    ready_run_slideshow();
 
-	    },
-	    each: function() {
-	       // ...
-	    },
-	    waitForAll: true
-	});
 
 	$('#bigthumb').mouseenter(function(){ __log() });
 	$('#bigthumb').mouseleave(function(){ __log() });
