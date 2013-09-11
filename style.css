@@ -100,6 +100,9 @@ a,p{
 	margin: 20px auto;
 	margin-top: 20px;
 }
+.descr_ref:hover{
+	text-decoration: underline;
+}
 .descr_text{
 	font-weight: 100;
 	line-height: 220%;

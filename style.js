@@ -82,7 +82,8 @@ $(window).load(function()
 		setTimeout('infinite_loop()',7000);
 
 		// click on pause button		
-		$('.log .pause').click(function(){
+		$('.log .pause').click(function(e){
+			e.preventDefault();
 			pause_animation();
 			stop_loop = true;
 			__log_tag('wait');			
@@ -91,12 +92,12 @@ $(window).load(function()
 
 		// click on play button
 		$('.log .play').click(function(e){
+
 			// reset vars
 			stop_loop = false;
 			__log_tag('pause');
 			if (loop_stopped) { infinite_loop() }
 			loop_stopped = false;
-
 		});
 
 	}
