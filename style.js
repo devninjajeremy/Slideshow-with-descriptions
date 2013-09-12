@@ -1,5 +1,4 @@
-
-// VARS - DO NOT TOUCH
+// vars
 var totalImages; // total numeber of images
 var itemVisibleNo = 0; // current item >> the first one
 var goingToNo = 1; // next or previous image
@@ -15,8 +14,16 @@ var currentTag = 'pause';
 
 $(document).ready(function()
 {	
+	
+	// init var totalImages
+	totalImages = $('.big_image').length;
 
-	// SPIN ICON START ---------------------------------------------->
+	$('.cnt_descr_box').each(function(){
+
+		diff = ($(this).parent().height() - $(this).height())/2;
+		if (diff > 0 ) $(this).css( 'top', diff );
+
+	});
 
 	// installing the spinner icon
 	var opts = {
@@ -41,10 +48,7 @@ $(document).ready(function()
 	var target = document.getElementById('mask');
 	var spinner = new Spinner(opts).spin(target);
 
-	// SPIN ICON END ----------------------------------------------->
-
 	// Assign variable
-	totalImages = $('.big_image').length;
 	limit = $('.big_image').length;
     descrHeight = $('#descr_box').height();
 
@@ -56,11 +60,11 @@ $(document).ready(function()
 
    
 	        
-	$('#mask').delay(200).fadeOut("slow");
-	// All descendant images have loaded, now slide up.
-	$('#descr_box').stop().delay(1300).animate({'top':'0'},{duration:detailsSpeed,specialEasing:"easeInCubic"});
+	        $('#mask').delay(200).fadeOut("slow");
+		    // All descendant images have loaded, now slide up.
+		    $('#descr_box').stop().delay(1500).animate({'top':'0'},{duration:700,specialEasing:"easeInCubic"});
 
-	readyRunSlideshow();
+		    readyRunSlideshow();
 
 
 	$('#bigthumb').mouseenter(function(){ __logShow() });
@@ -73,9 +77,9 @@ $(document).ready(function()
 	function readyRunSlideshow(){
 
 		initStatusBar(0);
-		runProgressiveBar(transitionSpeed);
 
-		setTimeout('infiniteLoop()',transitionSpeed);
+		runProgressiveBar(6500);
+		setTimeout('infiniteLoop()',7000);
 
 		// click on a single element
 		$('#status-slideshow .single-elem').click(function(e){
@@ -148,13 +152,13 @@ $(document).ready(function()
 		$('#images_list img').eq(goingToNo).css('zIndex','98');
 
 		// Description moves down
-		$('#descr_box').stop().animate({'top':descrHeight},{duration:detailsSpeed,specialEasing:"linear", complete:function(){changeDescr()}});
+		$('#descr_box').stop().animate({'top':descrHeight},{duration:800,specialEasing:"linear", complete:function(){changeDescr()}});
 
 		// Image fade out
-		$('.big_image').eq(itemVisibleNo).delay(delayImageOpacityTransition).animate({'opacity':'0'},imageOpacitySpeed);
+		$('.big_image').eq(itemVisibleNo).delay(1000).animate({'opacity':'0'},500);
 
 		// Description moves up
-		$('#descr_box').delay(imageOpacitySpeed).animate( { 'top': 0 },{duration:detailsSpeed, specialEasing:"linear", complete:function(){transp(this)}} );
+		$('#descr_box').delay(500).animate( { 'top': 0 },{duration:800, specialEasing:"linear", complete:function(){transp(this)}} );
 
 		// Refresh status bar
 		refreshStatus( goingToNo );
@@ -210,15 +214,14 @@ function infiniteLoop()
 
        // restart loop ( if no item has been selected by users )
        if (!stopLoop &&  stopNextLoop != 2 && itemVisibleNo != damnUserSelection ) {
-       		
+       		console.log('controllo eseguito');
        		if (selection) stopNextLoop++; 
        		// everything okay, restart loop
        		// slide image
        		slide(itemVisibleNo,goingToNo);
        		// run bar animation
-	   		runProgressiveBar(transitionSpeed);
-       	    setTimeout("infiniteLoop()",transitionSpeed);
-
+	   		runProgressiveBar(6500);
+       	    setTimeout("infiniteLoop()",7000);
    	   }else{
 
    	   		// the loop has been stopped
@@ -242,7 +245,7 @@ function runProgressiveBar(millis){
 
 	   // start animation progressive bar
        $('.status .avanzamento').css('width','0px');
-       $('.status .avanzamento').animate({'width':'100%'},{duration: millis-50});
+       $('.status .avanzamento').animate({'width':'100%'},{duration:millis});
 }
 
 // Active or disable log
