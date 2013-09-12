@@ -16,8 +16,9 @@ The slideshow can be edited by the config.js file.
 External plugin
 ===========================
 
-Images are responsive, thanks to response.js: http://responsejs.com/
-The preloader used is spin.js : fgnass.github.io/spin.js/
+- Images are responsive, thanks to response.js: http://responsejs.com/
+
+- The preloader used is spin.js : fgnass.github.io/spin.js/
 
 Version 0.1
 ===========================
