@@ -58,9 +58,7 @@ $(document).ready(function()
 
     $('#descr_box').css('top',$('#descr_box').height());
 
-    // Loading mask till images load
-	$('#images_list').waitForImages({
-	    finished: function() {
+   
 	        
 	        $('#mask').delay(200).fadeOut("slow");
 		    // All descendant images have loaded, now slide up.
@@ -68,12 +66,6 @@ $(document).ready(function()
 
 		    ready_run_slideshow();
 
-	    },
-	    each: function() {
-	       // ...
-	    },
-	    waitForAll: true
-	});
 
 	$('#bigthumb').mouseenter(function(){ __log_show() });
 	$('#bigthumb').mouseleave(function(){ __log_hide() });
@@ -102,7 +94,6 @@ $(document).ready(function()
 			stop_loop_on = damn_user_selection;
 
 			//replace buttons
-			console.log( 'current tag :' + current_tag );
 			if (current_tag == 'pause') { __log_tag('move'); }
 
 			__log_show();
@@ -155,24 +146,18 @@ $(document).ready(function()
 	// Slide image 
 	function slide(item_visible_no,going_to_no){
 
-		// console.log('slide >> visible: '+item_visible_no+' || going_to '+going_to_no);
-		console.log('-------------------------------');
 
 		// Set chosen image under the visible one
 		$('#images_list img').eq(going_to_no).css('zIndex','98');
-		console.log('zIndex');
 
 		// Description moves down
 		$('#descr_box').stop().animate({'top':descr_height},{duration:1500,specialEasing:"linear", complete:function(){changeDescr()}});
-		console.log('descrBox down');
 
 		// Image fade out
 		$('.big_image').eq(item_visible_no).delay(1000).animate({'opacity':'0'},500);
-		console.log('big image opacity');
 
 		// Description moves up
 		$('#descr_box').delay(500).animate( { 'top': 0 },{duration:1500, specialEasing:"linear", complete:function(){transp(this)}} );
-		console.log('descrBox up');
 
 		// Refresh status bar
 		refresh_status( going_to_no );
@@ -212,7 +197,6 @@ $(document).ready(function()
 
 function infinite_loop()
 {
-	   console.log("starting loop");
        // set vars
        going_to_no = item_visible_no+1;
 
@@ -231,8 +215,6 @@ function infinite_loop()
        if (!stop_loop &&  stop_next_loop != 2 && item_visible_no != damn_user_selection ) {
        		console.log('controllo eseguito');
        		if (selection) stop_next_loop++; 
-       		console.log('selection ->' + selection);
-       		console.log('snl ->' + stop_next_loop);
        		// everything okay, restart loop
        		// slide image
        		slide(item_visible_no,going_to_no);
@@ -242,13 +224,6 @@ function infinite_loop()
    	   }else{
 
    	   		// the loop has been stopped
-   	   		// insert play button to restart the loop
-   	   		console.log('loop stopped : ');
-   	   		console.log(' -- selection ->' + selection);
-   	   		console.log(' -- stop_loop ->' + stop_loop);
-   	   		console.log(' -- snl ->' + stop_next_loop);
-   	   		console.log(' -- i_v_n , d_u_s ->' + item_visible_no +' , ' + damn_user_selection);
-
    	   		loop_stopped = true;
    	   		__log_tag('play');
    	   		stop_next_loop = 0;
@@ -260,10 +235,6 @@ function infinite_loop()
 }
 
 function pause_animation(){
-
-	// pause progress bar
-	//$('.status .avanzamento').stop();
-	//$('.status .avanzamento').animate({'width':'100%'},{duration:100});
 
 	// stop all animations
 	$('*').not('.status .avanzamento').finish();
