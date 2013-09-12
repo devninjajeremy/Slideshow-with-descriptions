@@ -1,22 +1,22 @@
 // vars
-var total_images; // total numeber of images
-var item_visible_no = 0; // current item >> the first one
-var going_to_no = 1; // next or previous image
-var descr_height; // height of the container
+var totalImages; // total numeber of images
+var itemVisibleNo = 0; // current item >> the first one
+var goingToNo = 1; // next or previous image
+var descrHeight; // height of the container
 var limit; // number of total images
-var damn_user_selection = -1; 
-var stop_loop = false; // to be deleted
-var stop_loop_on;
-var loop_stopped = false;
-var stop_next_loop = 0;
+var damnUserSelection = -1; 
+var stopLoop = false; // to be deleted
+var stopLoopOn;
+var loopStopped = false;
+var stopNextLoop = 0;
 var selection = false;
-var current_tag = 'pause';
+var currentTag = 'pause';
 
 $(document).ready(function()
 {	
 	
-	// init var total_images
-	total_images = $('.big_image').length;
+	// init var totalImages
+	totalImages = $('.big_image').length;
 
 	$('.cnt_descr_box').each(function(){
 
@@ -50,7 +50,7 @@ $(document).ready(function()
 
 	// Assign variable
 	limit = $('.big_image').length;
-    descr_height = $('#descr_box').height();
+    descrHeight = $('#descr_box').height();
 
     // The first image is at the top!
     $('.big_image').eq(0).css('zIndex',99);
@@ -64,47 +64,48 @@ $(document).ready(function()
 		    // All descendant images have loaded, now slide up.
 		    $('#descr_box').stop().delay(1500).animate({'top':'0'},{duration:700,specialEasing:"easeInCubic"});
 
-		    ready_run_slideshow();
+		    readyRunSlideshow();
 
 
-	$('#bigthumb').mouseenter(function(){ __log_show() });
-	$('#bigthumb').mouseleave(function(){ __log_hide() });
+	$('#bigthumb').mouseenter(function(){ __logShow() });
+	$('#bigthumb').mouseleave(function(){ __logHide() });
 
 	
 });
 	
 	
-	function ready_run_slideshow(){
+	function readyRunSlideshow(){
 
-		init_status_bar(0);
+		initStatusBar(0);
 
-		run_progressive_bar(6500);
-		setTimeout('infinite_loop()',7000);
+		runProgressiveBar(6500);
+		setTimeout('infiniteLoop()',7000);
 
 		// click on a single element
-		$('#status-slideshow .single-elem').click(function(){
+		$('#status-slideshow .single-elem').click(function(e){
 
+			e.preventDefault();
 			selection = true;
 			// go to the selected image
 			var selected = $(this).attr('class').slice(15);
-			damn_user_selection = parseInt(selected);
+			damnUserSelection = parseInt(selected);
 
 			// stop loop
-			stop_next_loop = 1;
-			stop_loop_on = damn_user_selection;
+			stopNextLoop = 1;
+			stopLoopOn = damnUserSelection;
 
 			//replace buttons
-			if (current_tag == 'pause') { __log_tag('move'); }
+			if (currentTag == 'pause') { __logTag('move'); }
 
-			__log_show();
+			__logShow();
 
-			if (loop_stopped){ 
+			if (loopStopped){ 
 
 				// reset vars
-				stop_loop = false;
-				__log_tag('pause');
-				if (loop_stopped) { infinite_loop() }
-				loop_stopped = false;
+				stopLoop = false;
+				__logTag('pause');
+				if (loopStopped) { infiniteLoop() }
+				loopStopped = false;
 				selection = false;
 
 
@@ -114,26 +115,26 @@ $(document).ready(function()
 
 		// click on pause button		
 		$('.log .pause').click(function(){
-			pause_animation();
-			stop_loop = true;
-			__log_tag('wait');			
+			pauseAnimation();
+			stopLoop = true;
+			__logTag('wait');			
 
 		});
 
 		// click on play button
 		$('.log .play').click(function(e){
 			// reset vars
-			stop_loop = false;
-			__log_tag('pause');
-			if (loop_stopped) { infinite_loop() }
-			loop_stopped = false;
+			stopLoop = false;
+			__logTag('pause');
+			if (loopStopped) { infiniteLoop() }
+			loopStopped = false;
 
 		});
 
 	}
 
 
-	function init_status_bar(active){
+	function initStatusBar(active){
 		// Create the status bar
 		for(y = 0; y < $('.big_image').length; y++){
 			$('#status-slideshow').append(' <li class="single-elem no-'+y+'"></li>  ');
@@ -144,35 +145,35 @@ $(document).ready(function()
 
 
 	// Slide image 
-	function slide(item_visible_no,going_to_no){
+	function slide(itemVisibleNo,goingToNo){
 
 
 		// Set chosen image under the visible one
-		$('#images_list img').eq(going_to_no).css('zIndex','98');
+		$('#images_list img').eq(goingToNo).css('zIndex','98');
 
 		// Description moves down
-		$('#descr_box').stop().animate({'top':descr_height},{duration:1500,specialEasing:"linear", complete:function(){changeDescr()}});
+		$('#descr_box').stop().animate({'top':descrHeight},{duration:800,specialEasing:"linear", complete:function(){changeDescr()}});
 
 		// Image fade out
-		$('.big_image').eq(item_visible_no).delay(1000).animate({'opacity':'0'},500);
+		$('.big_image').eq(itemVisibleNo).delay(1000).animate({'opacity':'0'},500);
 
 		// Description moves up
-		$('#descr_box').delay(500).animate( { 'top': 0 },{duration:1500, specialEasing:"linear", complete:function(){transp(this)}} );
+		$('#descr_box').delay(500).animate( { 'top': 0 },{duration:800, specialEasing:"linear", complete:function(){transp(this)}} );
 
 		// Refresh status bar
-		refresh_status( going_to_no );
+		refreshStatus( goingToNo );
 	}
 
 
 	// This is transparent to the user
 	function transp(elem){
 		
-		$('#images_list img').eq(going_to_no).css('zIndex','99');
-		$('#images_list img').eq(item_visible_no).css('zIndex','0');
-		$('#images_list img').eq(item_visible_no).css('opacity','1');
+		$('#images_list img').eq(goingToNo).css('zIndex','99');
+		$('#images_list img').eq(itemVisibleNo).css('zIndex','0');
+		$('#images_list img').eq(itemVisibleNo).css('opacity','1');
 
 		// Refresh var
-		item_visible_no = going_to_no;
+		itemVisibleNo = goingToNo;
 
 	}
 
@@ -181,66 +182,66 @@ $(document).ready(function()
 
 		// change description element
 		$('.cnt_descr_box').removeClass('visible');
-		$('.cnt_descr_box').eq(going_to_no).addClass('visible');
+		$('.cnt_descr_box').eq(goingToNo).addClass('visible');
 
 	}
 
-	function refresh_status(elem_no){
+	function refreshStatus(elem_no){
 
-		var status_single_element = '#status-slideshow .single-elem';
+		var statusSingleElement = '#status-slideshow .single-elem';
 
-		$(status_single_element).removeClass('active');
-		$(status_single_element).eq(elem_no).toggleClass('active');
+		$(statusSingleElement).removeClass('active');
+		$(statusSingleElement).eq(elem_no).toggleClass('active');
 
 	}
 
 
-function infinite_loop()
+function infiniteLoop()
 {
        // set vars
-       going_to_no = item_visible_no+1;
+       goingToNo = itemVisibleNo+1;
 
        // If current img is the last one -> restart from the first (0)
-       if (item_visible_no == limit-1){ going_to_no = 0; }
+       if (itemVisibleNo == limit-1){ goingToNo = 0; }
 
        // if the user select an image...
-       if (damn_user_selection != -1){
+       if (damnUserSelection != -1){
        		// set new goal
-       		going_to_no = damn_user_selection;
-       		//reset damn_user_selection
-       		damn_user_selection = -1;
+       		goingToNo = damnUserSelection;
+       		//reset damnUserSelection
+       		damnUserSelection = -1;
        	}
 
        // restart loop ( if no item has been selected by users )
-       if (!stop_loop &&  stop_next_loop != 2 && item_visible_no != damn_user_selection ) {
+       if (!stopLoop &&  stopNextLoop != 2 && itemVisibleNo != damnUserSelection ) {
        		console.log('controllo eseguito');
-       		if (selection) stop_next_loop++; 
+       		if (selection) stopNextLoop++; 
        		// everything okay, restart loop
        		// slide image
-       		slide(item_visible_no,going_to_no);
+       		slide(itemVisibleNo,goingToNo);
        		// run bar animation
-	   		run_progressive_bar(6500);
-       	    setTimeout("infinite_loop()",7000);
+	   		runProgressiveBar(6500);
+       	    setTimeout("infiniteLoop()",7000);
    	   }else{
 
    	   		// the loop has been stopped
-   	   		loop_stopped = true;
-   	   		__log_tag('play');
-   	   		stop_next_loop = 0;
+   	   		loopStopped = true;
+   	   		__logTag('play');
+   	   		stopNextLoop = 0;
    	   		if (selection) {
    	   			selection = false; 
-   	   			stop_next_loop = 0;
+   	   			stopNextLoop = 0;
    	   		}
    	   }
 }
 
-function pause_animation(){
+function pauseAnimation(){
 
 	// stop all animations
 	$('*').not('.status .avanzamento').finish();
 
 }
-function run_progressive_bar(millis){
+function runProgressiveBar(millis){
 
 	   // start animation progressive bar
        $('.status .avanzamento').css('width','0px');
@@ -248,20 +249,20 @@ function run_progressive_bar(millis){
 }
 
 // Active or disable log
-function __log_show(){
+function __logShow(){
 	$('.log').addClass('enabled');
 }
-function __log_hide(){
+function __logHide(){
 	$('.log').removeClass('enabled');
 }
 
 
 // Add 'disabled' to all except to tag
-function __log_tag(tag){
+function __logTag(tag){
 	
 	$('.log-a').removeClass('disabled');
 	$('.log-a').addClass('disabled');
 	$('.log-a.'+tag).removeClass('disabled');
 
-	current_tag = tag;
+	currentTag = tag;
 }
